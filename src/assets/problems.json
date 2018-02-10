@@ -1,0 +1,19 @@
+[{
+    "id": 1,
+    "name": "Initialize an array with 1000 elements",
+    "description": "Initialize an array with 1000 elements, Each element is a person {id: x, name: 'name' } Id is a number, and must be unique.",
+    "solutions": [ {"code": "Array.apply(null, {length: 1000}).map((itm, ix) => ({id:ix, name:'p'}));",
+    "description" :"NOTE you have to do it with Array.apply, because it explicitly creates an undefined element. If you just do Array(1000) the elements are not set to anything. When using Array apply, you can use a ducktyping" }, 
+    { "code" : "Array(1000).fill({}).map( (itm , ix) => ({id:ix, name:'p'}))", 
+    "description": "Similar to the first solution, but a bit easier to understand"  }, 
+  {"code": "let p = [];for(n = 0;n < 1000; n++) {p.push({id: n, name:'p'})}", "description": "The fastest one, and in this case perhaps the most readable one :)"}]
+}, 
+{
+    "id": 2,
+    "name": "Finding the max value",
+    "description": "Find the highest value in an array",
+    "solutions": [ {"code": "Math.max.apply(null, [10, -1, 5])", "description" : "of course this only works if working on number arrays"}, 
+    { "code": "reduce", "description": ""}]
+}
+
+]
