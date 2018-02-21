@@ -1,3 +1,8 @@
-<p>
-  solution works!
-</p>
+<div *ngFor="let solution of problem?.solutions">
+    <p class="description">{{solution.description}}
+        <input name="mode" type="radio" [value]="Mode.Code" [(ngModel)]="solution.mode"> Code
+        <input name="mode" type="radio" [value]="Mode.Result" [(ngModel)]="solution.mode"> Result
+    </p>
+    <textarea class="code">{{beautify(solution.code)}} </textarea>
+    <p class="information">{{solution.information}}</p>
+</div>

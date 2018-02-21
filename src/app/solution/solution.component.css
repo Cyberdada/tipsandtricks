@@ -1,0 +1,15 @@
+.description {
+    font-weight: bold;
+}
+
+.code {
+    font-family: monospace;
+    white-space: pre;
+    width: 450px;
+    height: 250px;
+}
+
+.information {
+    font-size: 12px;
+    max-inline-size: 700px;
+}

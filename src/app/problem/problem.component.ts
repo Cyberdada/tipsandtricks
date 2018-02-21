@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+
 import { ProblemStateService} from '../problemstate.service';
 
 @Component({
@@ -11,11 +12,14 @@ export class ProblemComponent implements OnInit, OnDestroy {
 
   problemSubscription: Subscription;
   problems: any[];
+
   constructor(private problemStateServive: ProblemStateService) { }
 
 
   ngOnInit() {
-    this.problemSubscription = this.problemStateServive.allProblems$.subscribe(event => this.problems = event );
+    this.problemSubscription = this.problemStateServive.allProblems$.subscribe(event => {
+      this.problems = event.problems;
+     });
   }
 
   ngOnDestroy() {

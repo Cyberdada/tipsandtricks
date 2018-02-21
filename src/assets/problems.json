@@ -1,19 +1,73 @@
-[{
-    "id": 1,
-    "name": "Initialize an array with 1000 elements",
-    "description": "Initialize an array with 1000 elements, Each element is a person {id: x, name: 'name' } Id is a number, and must be unique.",
-    "solutions": [ {"code": "Array.apply(null, {length: 1000}).map((itm, ix) => ({id:ix, name:'p'}));",
-    "description" :"NOTE you have to do it with Array.apply, because it explicitly creates an undefined element. If you just do Array(1000) the elements are not set to anything. When using Array apply, you can use a ducktyping" }, 
-    { "code" : "Array(1000).fill({}).map( (itm , ix) => ({id:ix, name:'p'}))", 
-    "description": "Similar to the first solution, but a bit easier to understand"  }, 
-  {"code": "let p = [];for(n = 0;n < 1000; n++) {p.push({id: n, name:'p'})}", "description": "The fastest one, and in this case perhaps the most readable one :)"}]
-}, 
 {
-    "id": 2,
-    "name": "Finding the max value",
-    "description": "Find the highest value in an array",
-    "solutions": [ {"code": "Math.max.apply(null, [10, -1, 5])", "description" : "of course this only works if working on number arrays"}, 
-    { "code": "reduce", "description": ""}]
-}
+    "initialData": "const fathers = [{id: 2, age: 44, name: 'Steve'},{id: 3, age: 64, name: 'Charles'}, {id: 4, age: 54, name: 'Pat'}, {id: 5, age: 84, name: 'Proctor'}, {id: 7, age: 34, name: 'Dr Whopper'}]; const children = [ {id: 1, age: 3, name: 'Laura',  fid: 2 },{id: 2, age: 6, name: 'Manfred', fid: 2},{id: 2, age: 6, name: 'Stinger', fid: 4},{id: 2, age: 6, name: 'Sauron', fid: 4},{id: 2, age: 6, name: 'Malvberto', fid: 5},{id: 2, age: 6, name: 'Karen', fid: 5}];",
+    "problems": [{
+            "id": 1,
+            "name": "Initialize an array with 1000 elements",
+            "description": "Initialize an array with 1000 elements, Each element is a person {id: x, name: 'name' } Id is a number, and must be unique.",
+            "solutions": [{
+                    "description": "Interesting Array.apply variant found on the net.",
+                    "code": "Array.apply(null, {length: 1000}).map((itm, ix) => ({id:ix, name:'p'}));",
+                    "information": "NOTE you have to do it with Array.apply, because it explicitly creates an undefined element. If you just do Array(1000) the elements are not set to anything. When using Array apply, you can use a ducktyping"
+                },
 
-]
+                {
+                    "description": "Can we do it with forEach?",
+                    "code": "let feach = Array(1000).fill({}); feach.forEach((itm, ix) => { itm.id = ix; itm.name= 'p' }); feach;",
+                    "information": "Interesting results... Can someone explain?"
+                },
+                {
+                    "description": "Chained calls to fill and map.",
+                    "code": "Array(1000).fill().map( (itm , ix) => ({id:ix, name:'p'}))",
+                    "information": "a bit easier to understand :)"
+                },
+                {
+                    "description": "The traditonal for loop",
+                    "code": "let p = [];for(n = 0;n < 1000; n++) {p.push({id: n, name:'p'})} p;",
+                    "information": ""
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Finding the max value",
+            "description": "Find the highest value in an array",
+            "solutions": [
+                { "description": "Interesting solution found on the web.", "code": "Math.max.apply(null, [10, -1, 5])", "information": "of course this only works if working on number arrays" },
+                { "description": "spicing it up with some map magic, having array of objects and searching for max age", "code": "Math.max.apply(Math,fathers.map(itm => {return itm.age }))" },
+                { "description": "Reduce", "code": "fathers.reduce((max, itm) =>  { return (itm.age > max) ? itm.age : max; }, 0)", "information": "" },
+                {
+                    "description": "The Traditional for loop",
+                    "code": "let currMax = Number.MIN_VALUE; for(let i = 0; i < fathers.length; i++) { if ( currMax < fathers[i].age ) { currMax = fathers[i].age; }; } currMax;",
+                    "information": ""
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Total age ",
+            "description": "Calculate the total age",
+            "solutions": [{
+                    "description": "Reduce",
+                    "code": "fathers.reduce((tot, itm) =>  { return itm.age + tot; }, 0);",
+                    "information": ""
+                },
+                {
+                    "description": "The Traditional for loop",
+                    "code": "let totalAge = 0; for(let i = 0; i < fathers.length; i++) { totalAge += fathers[i].age;} totalAge;",
+                    "information": ""
+                }
+
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Join children with the fathers",
+            "description": "A classic scenario, we have two objecttypes. If object A.bid = B.id, combine a couple of A and B attributes",
+            "solutions": [
+                { "description": "map , and filter on children", "code": "fathers.map ( itm => ({id: itm.id, age:itm.age, name:itm.name, children: children.filter(cid => cid.fid ===itm.id)}))", "information": "" },
+                { "description": "nested foreach", "code": "fathers.forEach(father => { children.forEach(child => if(child.fid === father.id) {father.children.push.(child)} ) })", "information": "We have changed the construction of the orginal father array, might not be what we really want to do." }, 
+                {"description": "The Traditional for loop", "code":"let fathersWithChildren = []; for(let fi = 0; fi < fathers.length; fi++) { let newfather = {id: fathers[fi].id, age: fathers[fi].age, name: fathers[fi].name, children:[] }; for(let ci = 0; ci < children.length; ci ++) { if (children[ci].fid === fathers[fi].id) { newfather.children.push(children[ci]); } } fathersWithChildren.push(newfather);}"}
+            ]
+        }
+    ]
+}
