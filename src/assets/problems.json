@@ -1,9 +1,9 @@
 {
-    "initialData": "const fathers = [{id: 2, age: 44, name: 'Steve'},{id: 3, age: 64, name: 'Charles'}, {id: 4, age: 54, name: 'Pat'}, {id: 5, age: 84, name: 'Proctor'}, {id: 7, age: 34, name: 'Dr Whopper'}]; const children = [ {id: 1, age: 3, name: 'Laura',  fid: 2 },{id: 2, age: 6, name: 'Manfred', fid: 2},{id: 2, age: 6, name: 'Stinger', fid: 4},{id: 2, age: 6, name: 'Sauron', fid: 4},{id: 2, age: 6, name: 'Malvberto', fid: 5},{id: 2, age: 6, name: 'Karen', fid: 5}];",
+    "initialData": "const fathers = [{id: 2, age: 44, name: 'Steve'},{id: 2, age: 64, name: 'Charles'}, {id: 4, age: 54, name: 'Pat'}, {id: 5, age: 84, name: 'Proctor'}, {id: 7, age: 34, name: 'Dr Whopper'}]; const children = [ {id: 1, age: 3, name: 'Laura',  fid: 2 },{id: 2, age: 6, name: 'Manfred', fid: 2},{id: 3, age: 6, name: 'Stinger', fid: 4},{id: 4, age: 6, name: 'Sauron', fid: 4},{id: 5, age: 6, name: 'Malvberto', fid: 5},{id: 6, age: 6, name: 'Karen', fid: 5}];",
     "problems": [{
             "id": 1,
             "name": "Initialize an array with 1000 elements",
-            "description": "Initialize an array with 1000 elements, Each element is a person {id: x, name: 'name' } Id is a number, and must be unique.",
+            "description": "Initialize an array with 1000 elements, Each element is a person {id: x, name: 'name' } Id is a number, it must be unique, and in sequence",
             "solutions": [{
                     "description": "Interesting Array.apply variant found on the net.",
                     "code": "Array.apply(null, {length: 1000}).map((itm, ix) => ({id:ix, name:'p'}));",
@@ -22,9 +22,14 @@
                 },
                 {
                     "description": "The traditonal for loop",
-                    "code": "let p = [];for(n = 0;n < 1000; n++) {p.push({id: n, name:'p'})} p;",
+                    "code": "let p = [];for(let n = 0;n < 1000; n++) {p.push({id: n, name:'p'})} p;",
                     "information": ""
-                }
+                }, 
+                {
+                  "description": "If it where not for the sequence demand",
+                  "code": "Array(1000).fill({id:1, name:'p'})",
+                  "information": "Nice and sleezy"
+              }
             ]
         },
         {
@@ -33,7 +38,7 @@
             "description": "Find the highest value in an array",
             "solutions": [
                 { "description": "Interesting solution found on the web.", "code": "Math.max.apply(null, [10, -1, 5])", "information": "of course this only works if working on number arrays" },
-                { "description": "spicing it up with some map magic, having array of objects and searching for max age", "code": "Math.max.apply(Math,fathers.map(itm => {return itm.age }))" },
+                { "description": "spicing it up with map magic, searching array of objects for max age", "code": "Math.max.apply(Math,fathers.map(itm => {return itm.age }))" },
                 { "description": "Reduce", "code": "fathers.reduce((max, itm) =>  { return (itm.age > max) ? itm.age : max; }, 0)", "information": "" },
                 {
                     "description": "The Traditional for loop",
@@ -47,15 +52,25 @@
             "name": "Total age ",
             "description": "Calculate the total age",
             "solutions": [{
-                    "description": "Reduce",
+                    "description": "Reduce fathers only",
                     "code": "fathers.reduce((tot, itm) =>  { return itm.age + tot; }, 0);",
                     "information": ""
                 },
                 {
-                    "description": "The Traditional for loop",
+                    "description": "The Traditional for loop, fathers only",
                     "code": "let totalAge = 0; for(let i = 0; i < fathers.length; i++) { totalAge += fathers[i].age;} totalAge;",
                     "information": ""
-                }
+                }, 
+                {
+                  "description": "Reduce fathers and children",
+                  "code": "let totalAge = fathers.reduce((tot, itm) =>  { return itm.age + tot; }, 0); children.reduce((tot, itm) => { return itm.age + tot;}, totalAge);",
+                  "information": ""
+                }, 
+                {
+                  "description": "The Traditional for loop, fathers and children",
+                  "code": "let totalAge = 0; for(let i = 0; i < fathers.length; i++) { totalAge += fathers[i].age;}; for (let i = 0; i < children.length; i++) { totalAge += children[i].age;} totalAge;",
+                  "information": ""
+              }
 
             ]
         },
@@ -65,9 +80,20 @@
             "description": "A classic scenario, we have two objecttypes. If object A.bid = B.id, combine a couple of A and B attributes",
             "solutions": [
                 { "description": "map , and filter on children", "code": "fathers.map ( itm => ({id: itm.id, age:itm.age, name:itm.name, children: children.filter(cid => cid.fid ===itm.id)}))", "information": "" },
-                { "description": "nested foreach", "code": "fathers.forEach(father => { children.forEach(child => if(child.fid === father.id) {father.children.push.(child)} ) })", "information": "We have changed the construction of the orginal father array, might not be what we really want to do." }, 
-                {"description": "The Traditional for loop", "code":"let fathersWithChildren = []; for(let fi = 0; fi < fathers.length; fi++) { let newfather = {id: fathers[fi].id, age: fathers[fi].age, name: fathers[fi].name, children:[] }; for(let ci = 0; ci < children.length; ci ++) { if (children[ci].fid === fathers[fi].id) { newfather.children.push(children[ci]); } } fathersWithChildren.push(newfather);}"}
+                { "description": "nested foreach", "code": "fathers.forEach(father => { father.children = []; children.forEach(child => { if (child.fid === father.id) { father.children.push(child) } })});fathers;", "information": "We have changed the construction of the orginal father array, might not be what we really want to do." },
+                { "description": "The Traditional for loop", "code": "let fathersWithChildren = []; for(let fi = 0; fi < fathers.length; fi++) { let newfather = {id: fathers[fi].id, age: fathers[fi].age, name: fathers[fi].name, children:[] }; for(let ci = 0; ci < children.length; ci ++) { if (children[ci].fid === fathers[fi].id) { newfather.children.push(children[ci]); } } fathersWithChildren.push(newfather);}; fathersWithChildren;" }
             ]
-        }
+        }, 
+        {
+          "id": 5,
+          "name": "Uniqueness",
+          "description": "Removing non unique values (unique being has same id... in this case) ",
+          "solutions": [
+              { "description": "filter, and map on id to be able use indexOf (similar to", "code": "fathers.filter((value, ix, arr) => arr.map(itm => itm.id).indexOf(value.id) === ix)", "information": "Similar to solution #2 in the highest value in an array" },
+              { "description": "foreaching and using some", "code": "let uniqueF = [];fathers.forEach(father => {if (!uniqueF.some(itm => itm.id === father.id)) {uniqueF.push(father);}});uniqueF;", "information": "" },
+              { "description": "The Traditional for loop", "code": "let uniqueF = [];let isUnique = true; for (let ix = 0; ix < fathers.length; ix++) { isUnique = true;for (let fix = 0; fix < uniqueF.length; fix++) {if (uniqueF[fix].id === fathers[ix].id) {isUnique = false;break;}}isUnique && uniqueF.push(fathers[ix]);} uniqueF;",
+            "information": "Check out the new Set object for unique values, it's kinda cool. :)" }
+          ]
+      }
     ]
 }
