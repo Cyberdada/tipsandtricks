@@ -21,15 +21,19 @@
                     "information": "a bit easier to understand :)"
                 },
                 {
+                    "description": "Array.from",
+                    "code": "Array.from({ length: 1000}, (v, ix) => ({id: ix, name: 'p'}));"
+                },
+                {
                     "description": "The traditonal for loop",
                     "code": "let p = [];for(let n = 0;n < 1000; n++) {p.push({id: n, name:'p'})} p;",
                     "information": ""
-                }, 
+                },
                 {
-                  "description": "If it where not for the sequence demand",
-                  "code": "Array(1000).fill({id:1, name:'p'})",
-                  "information": "Nice and sleezy"
-              }
+                    "description": "If it where not for the sequence demand",
+                    "code": "Array(1000).fill({id:1, name:'p'})",
+                    "information": "Nice and sleezy"
+                }
             ]
         },
         {
@@ -60,17 +64,17 @@
                     "description": "The Traditional for loop, fathers only",
                     "code": "let totalAge = 0; for(let i = 0; i < fathers.length; i++) { totalAge += fathers[i].age;} totalAge;",
                     "information": ""
-                }, 
+                },
                 {
-                  "description": "Reduce fathers and children",
-                  "code": "let totalAge = fathers.reduce((tot, itm) =>  { return itm.age + tot; }, 0); children.reduce((tot, itm) => { return itm.age + tot;}, totalAge);",
-                  "information": ""
-                }, 
+                    "description": "Reduce fathers and children",
+                    "code": "let totalAge = fathers.reduce((tot, itm) =>  { return itm.age + tot; }, 0); children.reduce((tot, itm) => { return itm.age + tot;}, totalAge);",
+                    "information": ""
+                },
                 {
-                  "description": "The Traditional for loop, fathers and children",
-                  "code": "let totalAge = 0; for(let i = 0; i < fathers.length; i++) { totalAge += fathers[i].age;}; for (let i = 0; i < children.length; i++) { totalAge += children[i].age;} totalAge;",
-                  "information": ""
-              }
+                    "description": "The Traditional for loop, fathers and children",
+                    "code": "let totalAge = 0; for(let i = 0; i < fathers.length; i++) { totalAge += fathers[i].age;}; for (let i = 0; i < children.length; i++) { totalAge += children[i].age;} totalAge;",
+                    "information": ""
+                }
 
             ]
         },
@@ -83,17 +87,20 @@
                 { "description": "nested foreach", "code": "fathers.forEach(father => { father.children = []; children.forEach(child => { if (child.fid === father.id) { father.children.push(child) } })});fathers;", "information": "We have changed the construction of the orginal father array, might not be what we really want to do." },
                 { "description": "The Traditional for loop", "code": "let fathersWithChildren = []; for(let fi = 0; fi < fathers.length; fi++) { let newfather = {id: fathers[fi].id, age: fathers[fi].age, name: fathers[fi].name, children:[] }; for(let ci = 0; ci < children.length; ci ++) { if (children[ci].fid === fathers[fi].id) { newfather.children.push(children[ci]); } } fathersWithChildren.push(newfather);}; fathersWithChildren;" }
             ]
-        }, 
+        },
         {
-          "id": 5,
-          "name": "Uniqueness",
-          "description": "Removing non unique values (unique being has same id... in this case) ",
-          "solutions": [
-              { "description": "filter, and map on id to be able use indexOf (similar to", "code": "fathers.filter((value, ix, arr) => arr.map(itm => itm.id).indexOf(value.id) === ix)", "information": "Similar to solution #2 in the highest value in an array" },
-              { "description": "foreaching and using some", "code": "let uniqueF = [];fathers.forEach(father => {if (!uniqueF.some(itm => itm.id === father.id)) {uniqueF.push(father);}});uniqueF;", "information": "" },
-              { "description": "The Traditional for loop", "code": "let uniqueF = [];let isUnique = true; for (let ix = 0; ix < fathers.length; ix++) { isUnique = true;for (let fix = 0; fix < uniqueF.length; fix++) {if (uniqueF[fix].id === fathers[ix].id) {isUnique = false;break;}}isUnique && uniqueF.push(fathers[ix]);} uniqueF;",
-            "information": "Check out the new Set object for unique values, it's kinda cool. :)" }
-          ]
-      }
+            "id": 5,
+            "name": "Uniqueness",
+            "description": "Removing non unique values (unique being has same id... in this case) ",
+            "solutions": [
+                { "description": "filter, and map on id to be able use indexOf (similar to", "code": "fathers.filter((value, ix, arr) => arr.map(itm => itm.id).indexOf(value.id) === ix)", "information": "Similar to solution #2 in the highest value in an array" },
+                { "description": "foreaching and using some", "code": "let uniqueF = [];fathers.forEach(father => {if (!uniqueF.some(itm => itm.id === father.id)) {uniqueF.push(father);}});uniqueF;", "information": "" },
+                {
+                    "description": "The Traditional for loop",
+                    "code": "let uniqueF = [];let isUnique = true; for (let ix = 0; ix < fathers.length; ix++) { isUnique = true;for (let fix = 0; fix < uniqueF.length; fix++) {if (uniqueF[fix].id === fathers[ix].id) {isUnique = false;break;}}isUnique && uniqueF.push(fathers[ix]);} uniqueF;",
+                    "information": "Check out the new Set object for unique values, it's kinda cool. :)"
+                }
+            ]
+        }
     ]
 }
